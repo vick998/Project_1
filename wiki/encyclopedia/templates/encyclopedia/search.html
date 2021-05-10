@@ -1,0 +1,23 @@
+{% extends "encyclopedia/layout.html" %}
+
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block body %}
+    <h1>Search Results</h1>
+
+    <ul>
+        {% for title in titles %}
+        {% if titl in title %}
+        <li>
+        	<form action="{% url 'entry' %}" method="get">
+        		<input class="bti" type="submit" name="q1" value="{{title}}">
+        	</form>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+{% endblock %}
