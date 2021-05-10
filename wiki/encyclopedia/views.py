@@ -48,19 +48,20 @@ def entry(request):
 
 def newentry(request):
 	if request.method == "POST":
-		title = request.POST.get("q2")
-		text = request.POST.get("t1")
+		title = request.POST["q2"]
+		text = request.POST["t1"]
 		titles = util.lowercase()
 		if title in titles:
-			return HttpResponseRedirect(reverse("index"))
+			except(KeyError)
 			return render(request, "encyclopedia/error1.html", {
 				"title" : title
 				})
+			# return HttpResponseRedirect('/newentry/error1.html')
 		else:
 			util.save_entry(title, text)
-			return HttpResponseRedirect(reverse("index"))
 			return render(request, "encyclopedia/title.html", {
-			"title": util.nametitle(title), 
+			"title": title, 
 			"titledetail": util.get_entry(title)
 			})
+			return HttpResponseRedirect("/title")
 	return render(request,"encyclopedia/newentry.html")
