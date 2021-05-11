@@ -6,6 +6,10 @@ from django.http import HttpResponseRedirect
 from django.core.files.base import ContentFile
 from . import util
 
+class NewEntryForm(forms.Form):
+	title = forms.CharField(label="title");
+	descr = forms.CharField(widget=forms.Textarea);
+
 def index(request):
 	return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
@@ -48,20 +52,21 @@ def entry(request):
 
 def newentry(request):
 	if request.method == "POST":
-		title = request.POST["q2"]
-		text = request.POST["t1"]
+		newent = NewEntryForm(request.POST)
 		titles = util.lowercase()
-		if title in titles:
-			except(KeyError)
+		if newent.title in titles:
+			# except(KeyError)
 			return render(request, "encyclopedia/error1.html", {
-				"title" : title
+				"title" : newent.title
 				})
 			# return HttpResponseRedirect('/newentry/error1.html')
 		else:
-			util.save_entry(title, text)
+			util.save_entry(newent.title, newent.descr)
 			return render(request, "encyclopedia/title.html", {
-			"title": title, 
-			"titledetail": util.get_entry(title)
+			"title": newent.title, 
+			"titledetail": util.get_entry(newent.title)
 			})
 			return HttpResponseRedirect("/title")
-	return render(request,"encyclopedia/newentry.html")
+	return render(request,"encyclopedia/newentry.html",{
+		"newent": NewEntryForm()
+		})
