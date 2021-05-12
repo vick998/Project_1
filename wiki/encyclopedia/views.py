@@ -1,14 +1,11 @@
 from django.shortcuts import render
 from django import forms
+from django.core.exceptions import ValidationError
 from django.http import QueryDict
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.core.files.base import ContentFile
 from . import util
-
-class NewEntryForm(forms.Form):
-	title = forms.CharField(label="title");
-	descr = forms.CharField(widget=forms.Textarea);
 
 def index(request):
 	return render(request, "encyclopedia/index.html", {
@@ -50,23 +47,31 @@ def entry(request):
 			})
 
 
+def DataCheck(value):
+		titles = util.lowercase()
+		if value in titles:
+			raise ValidationError("Already exists")
+
+class NewEntryForm(forms.Form):
+	title = forms.CharField(label="title", validators=[DataCheck]);
+	descr = forms.CharField(label="descr");
+
+
+
 def newentry(request):
 	if request.method == "POST":
 		newent = NewEntryForm(request.POST)
-		titles = util.lowercase()
-		if newent.title in titles:
-			# except(KeyError)
-			return render(request, "encyclopedia/error1.html", {
-				"title" : newent.title
-				})
-			# return HttpResponseRedirect('/newentry/error1.html')
-		else:
+		if newent.is_valid():
 			util.save_entry(newent.title, newent.descr)
 			return render(request, "encyclopedia/title.html", {
-			"title": newent.title, 
-			"titledetail": util.get_entry(newent.title)
+			"title": request.POST.get("title"), 
+			"titledetail": util.get_entry(request.POST.get("title"))
 			})
-			return HttpResponseRedirect("/title")
+			return HttpResponseRedirect(reverse("index"))
+		else:
+			return render(request, "encyclopedia/error1.html", {
+				"title" : request.POST.get("title")
+				})
 	return render(request,"encyclopedia/newentry.html",{
 		"newent": NewEntryForm()
 		})
