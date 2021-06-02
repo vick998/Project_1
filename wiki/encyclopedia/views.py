@@ -57,12 +57,13 @@ class NewEntryForm(forms.Form):
 	descr = forms.CharField(label="descr");
 
 
-
 def newentry(request):
 	if request.method == "POST":
 		newent = NewEntryForm(request.POST)
+		title1 = request.POST.get("title")
+		descr1 = request.POST.get("descr")
 		if newent.is_valid():
-			util.save_entry(newent.title, newent.descr)
+			util.save_entry(title1, descr1)
 			return render(request, "encyclopedia/title.html", {
 			"title": request.POST.get("title"), 
 			"titledetail": util.get_entry(request.POST.get("title"))
