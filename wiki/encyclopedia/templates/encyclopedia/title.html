@@ -1,5 +1,6 @@
 {% extends "encyclopedia/layout.html" %}
 
+
 {% block title %}
     {{ title }}
 {% endblock %}
@@ -8,4 +9,12 @@
     <h1>{{ title }}</h1>
 
     <p>{{ titledetail }}</p>
+
+    <form method="get" action="{% url 'editdesc' %}">
+        <input type="hidden" name="title1" value="{{ title }}">
+        <input type="hidden" name="descr1" value="{{ titledetail }}">
+        <input type="submit" name="" value="Edit description">
+    </form> 
 {% endblock %}
+    
+<!-- make it into a form -->

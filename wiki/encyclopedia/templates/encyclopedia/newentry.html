@@ -9,8 +9,8 @@
 
     <form action="{% url 'newentry' %}" method="post">
     	{% csrf_token %}
-    	{{ newent.title }}
-    	{{ newent.descr }}
+    	<div>{{ newent.title }}</div>
+        <div>{{ newent.descr.as_textarea }}</div>
     	<input type="submit">
     </form>
 

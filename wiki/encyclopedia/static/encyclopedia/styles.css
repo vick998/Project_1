@@ -13,8 +13,16 @@ h1 {
 }
 
 textarea {
-    height: 90vh;
+    display:  block;
+    height: 50vh;
     width: 80%;
+}
+
+input {
+    display: block;
+    width: 80%;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .main {
