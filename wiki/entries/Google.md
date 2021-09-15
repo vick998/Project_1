@@ -1,0 +1,1 @@
+Google is an american company owned by Alphabet Inc.

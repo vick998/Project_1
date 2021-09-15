@@ -1,1 +1,1 @@
-PHP is a cool programming language.
+PHP is a cool programming lanuage.
